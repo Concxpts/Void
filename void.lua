@@ -1,7 +1,7 @@
 ---@diagnostic disable: undefined-global, trailing-space, deprecated
 -- local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/boop71/some-useless-code/main/kinlei-ui-keybinds.lua"))()
 -- local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/boop71/cappuccino/main/v3/notification.lua"))()
-local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/Concepts0/Void/main/vapelib.lua")()
+local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/main/vapelib.lua"))()
 
 --#region Functions
 local rs = game:GetService("RunService")
