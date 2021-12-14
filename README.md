@@ -4,3 +4,6 @@ I have edited the Vape UI Library created by [dawid](https://v3rmillion.net/memb
 
 ## Void
 Void is a script that I have been working on since I got into Roblox scripting. It is powerful, and has a load of features. There will be a list of supported games and all the features along with changelogs in this readme file in the future.
+
+## Community Features
+If Void gets big and you're interested in adding features and possibly even making them apart of the official release, feel free to fork the files and create pull requests. It would be great to have a community project to create one of the greatest scripts.
