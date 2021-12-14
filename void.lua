@@ -1,0 +1,396 @@
+---@diagnostic disable: undefined-global, trailing-space, deprecated
+-- local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/boop71/some-useless-code/main/kinlei-ui-keybinds.lua"))()
+-- local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/boop71/cappuccino/main/v3/notification.lua"))()
+local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/Concepts0/Void/main/vapelib.lua")()
+
+--#region Functions
+local rs = game:GetService("RunService")
+
+local plr = game.Players.LocalPlayer
+local cam = workspace.CurrentCamera
+
+local speedToggled = false
+local jumpToggled = false
+
+local tracersToggled = false
+
+local nbtfInfiniteAmmoToggled = false
+
+local walkSpeed = 16
+local jumpPower = 50
+
+function AntiAFK()
+    local client = game:GetService("VirtualUser")
+
+    plr.Idled:Connect(function()
+        client:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+        wait(1)
+        client:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
+end
+
+function Speed(toggled)
+    print(toggled)
+    if toggled then
+        speedToggled = true
+
+        spawn(function() 
+            while speedToggled do
+                plr.Character.Humanoid.WalkSpeed = walkSpeed
+
+                if not speedToggled then break end
+
+                wait()
+            end
+        end)
+    else
+        speedToggled = false
+        plr.Character.Humanoid.WalkSpeed = 16
+    end
+end
+
+function SuperJump(toggled)
+    if toggled then
+        jumpToggled = true
+
+        spawn(function() 
+            while jumpToggled do
+                plr.Character.Humanoid.JumpPower = jumpPower
+
+                if not jumpToggled then break end
+
+                wait()
+            end
+        end)
+    else
+        jumpPower = false
+        plr.Character.Humanoid.JumpPower = 50
+    end
+end
+
+function Chams(toggled) -- TODO: REWRITE WITH DRAWING API
+    if toggled then        
+        function CreateSG(name,parent,face)
+            local SurfaceGui = Instance.new("SurfaceGui",parent)
+            SurfaceGui.Parent = parent
+            SurfaceGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+            SurfaceGui.Face = Enum.NormalId[face]
+            SurfaceGui.LightInfluence = 0
+            SurfaceGui.ResetOnSpawn = false
+            SurfaceGui.Name = name
+            SurfaceGui.AlwaysOnTop = true
+            local Frame = Instance.new("Frame",SurfaceGui)
+            Frame.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+            Frame.Size = UDim2.new(1,0,1,0)
+        end
+        
+        while wait(1) do
+            for i,v in pairs (game:GetService("Players"):GetPlayers()) do
+                if v ~= game:GetService("Players").LocalPlayer and v.Character ~= nil and v.Character:FindFirstChild("Head") and v.Character.Head:FindFirstChild("cham") == nil then
+                    for i,v in pairs (v.Character:GetChildren()) do
+                        if v:IsA("MeshPart") or v.Name == "Head" then
+                        CreateSG("cham",v,"Back")
+                        CreateSG("cham",v,"Front")
+                        CreateSG("cham",v,"Left")
+                        CreateSG("cham",v,"Right")
+                        CreateSG("cham",v,"Right")
+                        CreateSG("cham",v,"Top")
+                        CreateSG("cham",v,"Bottom")
+                        end
+                    end
+                end
+            end
+        end
+    else
+        for i,v in pairs(game.Players:GetPlayers()) do
+            if v ~= game.Players.LocalPlayer and v.Character ~= nil and v.Character:FindFirstChild("Head") and v.Character.Head:FindFirstChild("Cham") then
+                v.Character.Head:FindFirstChild("Cham"):Destroy()
+            end
+        end
+    end
+end
+
+function Tracers(toggled)
+    tracersToggled = toggled
+
+    for _,v in pairs(game.Players:GetPlayers()) do
+        if v.Name ~= plr.Name then
+            local tracer = Drawing.new("Line")
+    
+            rs.Heartbeat:Connect(function()
+                if v.Character ~= nil and v.Character.HumanoidRootPart ~= nil then
+                    local pos, size = v.Character.HumanoidRootPart.CFrame, v.Character.HumanoidRootPart.Size * 1
+                    local vector, onScreen = cam:WorldToViewportPoint(pos * CFrame.new(0, -size.Y, 0).p)
+                    
+                    tracer.Thickness = 2
+                    tracer.Transparency = 1
+                    tracer.Color = Color3.fromRGB(255,255,255)
+
+                    tracer.From = Vector2.new(cam.ViewportSize.X / 2, cam.ViewportSize.Y / 2)
+
+                    if onScreen == true then
+                        tracer.To = Vector2.new(vector.X, vector.Y)
+                        
+                        tracer.Visible = tracersToggled
+                    else tracer.Visible = false end
+                else tracer.Visible = false end
+            end)
+
+            game.Players.PlayerRemoving:Connect(function()
+                tracer.Visible = false
+            end)
+        end
+    end
+
+    game.Players.PlayerAdded:Connect(function(player)
+        player.CharacterAdded:Connect(function(v)
+            if v.Name ~= plr.Name then
+                local tracer = Drawing.new("Line")
+        
+                rs.Heartbeat:Connect(function()
+                    if v.Character ~= nil and v.Character.HumanoidRootPart ~= nil then
+                        local pos, size = v.Character.HumanoidRootPart.CFrame, v.Character.HumanoidRootPart.Size * 1
+                        local vector, onScreen = cam:WorldToViewportPoint(pos * CFrame.new(0, -size.Y, 0).p)
+                        
+                        tracer.Thickness = 2
+                        tracer.Transparency = 1
+                        tracer.Color = Color3.fromRGB(255,255,255)
+    
+                        tracer.From = Vector2.new(cam.ViewportSize.X / 2, cam.ViewportSize.Y / 2)
+    
+                        if onScreen == true then
+                            tracer.To = Vector2.new(vector.X, vector.Y)
+                            
+                            tracer.Visible = tracersToggled
+                        else tracer.Visible = false end
+                    else tracer.Visible = false end
+                end)
+    
+                game.Players.PlayerRemoving:Connect(function()
+                    tracer.Visible = false
+                end)
+            end
+        end)
+    end)
+end
+
+function BloxburgAutofarm(type)
+    repeat wait() until game:IsLoaded()
+
+    local rs = game.ReplicatedStorage
+    local ts = game:GetService("TweenService")
+
+    local stats = rs.Stats[plr.Name]
+    local dm = require(rs.Modules.DataManager)
+
+    local function fireServer(data)
+        local oldI = getfenv(dm.FireServer).i
+        
+        getfenv(dm.FireServer).i = function() end
+        dm:FireServer(data)
+        getfenv(dm.FireServer).i = oldI
+    end
+
+    local function getOrder(c)
+        if not c or (c and not c:FindFirstChild("Order")) then return end
+
+        if stats.Job.Value == "StylezHairdresser" then 
+            local style = c.Order:WaitForChild("Style").Value
+            local color = c.Order:WaitForChild("Color").Value
+
+            return {style, color}
+        elseif stats.Job.Value == "BloxyBurgersCashier" then
+            local burger = c.Order:WaitForchild("Burger").Value
+            local fries = c.Order:WaitForChild("Fries").Value
+            local cola = c.Order:WaitForChild("Cola").Value
+
+            return {burger, fries, cola}
+        end
+    end
+
+    if (type == 1) then
+        if (stats.Job.Value ~= "StylezHairdresser") then
+            jobManager:GoToWork("StylezHairdresser")
+        end
+        
+        repeat wait() until stats.Job.Value == "StylezHairdresser"
+
+        ts:Create(plr.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFrame.new(868.464783, 13.6776829, 174.983795, -0.999945581, -6.58446098e-08, -0.0104347449, -6.6522297e-08, 1, 6.45977494e-08, 0.0104347449, 6.52883756e-08, -0.999945581)}):Play()
+        
+        while true do
+            local workstations = workspace.Environment.Locations.StylezHairStudio.HairdresserWorkstations
+            for _,v in next, workstations:GetChildren() do
+                if (v.Occupied.Value) then
+                    fireServer({Type = "FinishOrder", Workstation = v ,Order = getOrder(v.Occupied.Value)})
+                end
+            end
+
+            wait()
+        end
+    elseif(type == 2) then
+        if (stats.Job.Value ~= "BloxyBurgersCashier") then
+            jobManager:GoToWork("BloxyBurgersCashier")
+        end;
+        
+        repeat wait() until stats.Job.Value == "BloxyBurgersCashier"
+        ts:Create(plr.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFrame.new(825.076355, 13.6776829, 276.091309, 0.0133343497, -5.09454665e-08, -0.999910772, 7.34347916e-09, 1, -5.08520621e-08, 0.999910772, -6.66474698e-09, 0.0133343497)}):Play()
+        
+        while true do
+            local workstations = workspace.Environment.Locations.BloxyBurgers.CashierWorkstations;
+            for _,v in next, workstations:GetChildren() do
+                if (v.Occupied.Value) then
+                    fireServer({Type = "FinishOrder", Workstation = v, Order = getOrder(v.Occupied.Value)})
+                end
+            end
+
+            wait()
+        end
+    end
+end
+--#endregion
+
+--#region UI
+--#region Init
+local window = lib:Window("Void",Color3.fromRGB(139, 80, 221),Enum.KeyCode.RightShift)
+
+local S1, S2, S4 = window:Tab("Player"), window:Tab("Server"), window:Tab("ESP")
+--#endregion
+
+--#region Game : Bloxburg
+if (game.PlaceId == 185655149) then
+    local S3 = window:Tab("Bloxburg")
+
+    S3:Label("Autofarm")
+
+    S3:Button("Bloxburg Autofarm : Hair Dressing", function()
+        lib:Notification("Autofarm Started", "Hairdressing autofarm has begun.", "Ok")
+
+        BloxburgAutofarm(1)
+    end)
+
+    S3:Button("Bloxburg Autofarm : Cashier", function()
+        lib:Notification("Autofarm Started", "Cashier autofarm has begun.", "Ok")
+
+        BloxburgAutofarm(2)
+    end)
+end
+--#endregion
+
+--#region Game : Nuclear Bomb Testing Facility
+if (game.PlaceId == 6153709) then
+    local S3 = window:Tab("Nuclear Bomb Testing Facility")
+
+    local weaponList = {
+        "UMP-9",
+        "MPX",
+        "Imaginary Gun",
+        "M4 Carbine",
+        "AK74",
+        "Spy USP",
+        "God Gun",
+        "USP"
+    }
+
+    S3:Label("Weapons")
+
+    -- God Gun
+    S3:Button("God Gun", function()
+        for _,tool in pairs(plr.Backpack:GetChildren()) do
+            for _,weaponName in pairs(weaponList) do
+                if tool.Name == weaponName and tool.Name ~= "God Gun" then
+                    tool.Name = "God Gun"
+                    tool.ToolTip = "Bring the wrath of God to your weapon. Let hell rain down on your enemies."
+                    tool.Configuration.ShotCooldown.Value = 0
+                    tool.Configuration.RecoilMin.Value = 0
+                    tool.Configuration.RecoilMax.Value = 0
+                    tool.Configuration.RecoilDecay.Value = 0
+                    tool.Configuration.HitDamage.Value = 999
+                    tool.Configuration.MuzzleFlashSize1.Value = 0
+                    tool.Configuration.MuzzleFlashSize0.Value = 0
+                    tool.Configuration.TotalRecoilMax.Value = 0
+                    tool.Configuration.MaxSpread.Value = 0
+                    tool.Configuration.MaxDistance.Value = 999999
+                end
+            end
+        end
+
+        for _,tool in pairs(plr.Character:GetChildren()) do
+            for _,weaponName in pairs(weaponList) do
+                if tool.Name == weaponName and tool.Name ~= "God Gun" then
+                    tool.Name = "God Gun"
+                    tool.ToolTip = "Bring the wrath of God to your weapon. Let hell rain down on your enemies."
+                    tool.Configuration.ShotCooldown.Value = 0
+                    tool.Configuration.RecoilMin.Value = 0
+                    tool.Configuration.RecoilMax.Value = 0
+                    tool.Configuration.RecoilDecay.Value = 0
+                    tool.Configuration.HitDamage.Value = 999
+                    tool.Configuration.MuzzleFlashSize1.Value = 0
+                    tool.Configuration.MuzzleFlashSize0.Value = 0
+                    tool.Configuration.TotalRecoilMax.Value = 0
+                    tool.Configuration.MaxSpread.Value = 0
+                    tool.Configuration.MaxDistance.Value = 999999
+                end
+            end
+        end
+    end)
+
+    -- Infinite Ammo Toggle
+    S3:Toggle("Infinite Ammo", function(v)
+        if v then nbtfInfiniteAmmoToggled = true else nbtfInfiniteAmmoToggled = false end
+
+        spawn(function() 
+            while nbtfInfiniteAmmoToggled do 
+                if nbtfInfiniteAmmoToggled then
+                    for _,tool in pairs(plr.Backpack:GetChildren()) do
+                        for _,weaponName in pairs(weaponList) do
+                            if string.match(tool.Name, weaponName) then
+                                tool.Configuration.AmmoReserves.Value = 999999
+                                tool.Configuration.AmmoCapacity.Value = 999999
+                                tool.CurrentAmmo.Value = 999999
+                            end
+                        end
+                    end
+
+                    for _,tool in pairs(plr.Character:GetChildren()) do
+                        for _,weaponName in pairs(weaponList) do
+                            if string.match(tool.Name, weaponName) then
+                                tool.Configuration.AmmoReserves.Value = 999999
+                                tool.Configuration.AmmoCapacity.Value = 999999
+                                tool.CurrentAmmo.Value = 999999
+                            end
+                        end
+                    end
+                else break end
+
+                wait()
+            end      
+        end)
+    end)
+end
+--#endregion
+
+--#region Player
+S1:Label("General")
+
+S1:Button("Anti-AFK Kick", function()
+    AntiAFK()
+end)
+
+S1:Label("Movement")
+
+S1:Toggle("Speed",false,function(v) Speed(v) end)
+S1:Slider("Speed Amount",16,150,16,function(v) walkSpeed = v end)
+
+S1:Toggle("Super Jump",false,function(v) SuperJump(v) end)
+S1:Slider("Jump Power",50,1000,50,function(v) jumpPower = v end)
+--#endregion
+
+--#region Server
+S2:Button("Rejoin Server", function() game:GetService("TeleportService"):Teleport(game.PlaceId, plr) end)
+--#endregion
+
+--#region ESP
+S4:Toggle("Chams ESP", function(v) Chams(v) end)
+S4:Toggle("Tracers", function(v) Tracers(v) end)
+--#endregion
+--#endregion
