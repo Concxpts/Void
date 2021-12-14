@@ -7,12 +7,8 @@ local Mouse = LocalPlayer:GetMouse()
 local PresetColor = Color3.fromRGB(44, 120, 224)
 local CloseBind = Enum.KeyCode.RightControl
 
-if game.CoreGui:FindFirstChild("MRkZKMwINC") then
-    game.CoreGui["MRkZKMwINC"]:Destroy()
-end
-
 local ui = Instance.new("ScreenGui")
-ui.Name = "MRkZKMwINC"
+ui.Name = "ui"
 ui.Parent = game.CoreGui
 ui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -90,10 +86,6 @@ local function MakeDraggable(topbarobject, object)
 end
 
 function lib:Window(text, preset, closebind)
-    if game.CoreGui:FindFirstChild("MRkZKMwINC") then
-        game.CoreGui["MRkZKMwINC"]:Destroy()
-    end
-    
     CloseBind = closebind or Enum.KeyCode.RightControl
     PresetColor = preset or Color3.fromRGB(44, 120, 224)
     fs = false
