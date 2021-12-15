@@ -30,7 +30,6 @@ function AntiAFK()
 end
 
 function Speed(toggled)
-    print(toggled)
     if toggled then
         speedToggled = true
 
@@ -390,7 +389,7 @@ S2:Button("Rejoin Server", function() game:GetService("TeleportService"):Telepor
 --#endregion
 
 --#region ESP
-S4:Toggle("Chams ESP", function(v) Chams(v) end)
-S4:Toggle("Tracers", function(v) Tracers(v) end)
+S4:Toggle("Chams ESP",false,function(v) Chams(v) end)
+S4:Toggle("Tracers",false,function(v) Tracers(v) end)
 --#endregion
 --#endregion
