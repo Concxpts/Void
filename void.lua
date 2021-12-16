@@ -354,7 +354,7 @@ S4:Toggle("Tracers",false,function(v) Tracers(v) end)
 
 --#region Script Hub
 S5:Label("Essential")
-S5:Button("Simple Spy",function() loadstring(game:HttpGet(""))() end) -- load from github once done
+S5:Button("Simple Spy",function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/experimental/scripts/simplespy.lua"))() end)
 S5:Button("Dark Dev V4",function() loadstring(game:HttpGetAsync("https://pastebin.com/raw/iuQPQq4M"))() end) 
 S5:Label("Hubs")
 S5:Button("Solaris",function() loadstring(game:HttpGet('https://solarishub.dev/script.lua',true))() end)
@@ -366,7 +366,7 @@ S5:Button("Ancestor",function() loadstring(game:HttpGetAsync'https://ancestordev
 S5:Button("Dirt",function() loadstring(game:HttpGet("https://dirtgui.xyz/Lt2.lua",true))() end)
 S5:Button("Bark",function() loadstring(game:HttpGetAsync'https://cdn.applebee1558.com/bark/bark.lua')('bark > blood :)') end)
 S5:Label("Apocalypse Rising")
-S5:Button("Tripp",function() loadstring(game:HttpGet(""))() end) -- load from github once done
+S5:Button("Tripp",function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/experimental/scripts/tripp.lua"))() end)
 S5:Label("Bedwars")
 S5:Button("Vape",function() loadstring(game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua", true))() end)
 S5:Label("Clone Tycoon 2")
