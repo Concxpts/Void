@@ -1,11 +1,6 @@
 {
-    "robloxLsp.diagnostics.globals": [
-        "getrawmetatable",
-        "setreadonly",
-        "newcclosure",
-        "getnamecallmethod",
-        "Drawing",
-        "jobManager",
-        "knixhub"
+    "robloxLsp.diagnostics.disable": [
+        "invalid-class-name",
+        "undefined-global"
     ]
 }
