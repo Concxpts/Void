@@ -346,6 +346,7 @@ S1:Slider("Jump Power",50,1000,50,function(v) jumpPower = v end)
 
 --#region Server
 S2:Button("Rejoin Server", function() game:GetService("TeleportService"):Teleport(game.PlaceId, plr) end)
+S2:Button("Start Remote Spy", function()  end)
 --#endregion
 
 --#region ESP
