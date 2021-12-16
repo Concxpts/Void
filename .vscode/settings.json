@@ -1,0 +1,11 @@
+{
+    "robloxLsp.diagnostics.globals": [
+        "getrawmetatable",
+        "setreadonly",
+        "newcclosure",
+        "getnamecallmethod",
+        "Drawing",
+        "jobManager",
+        "knixhub"
+    ]
+}

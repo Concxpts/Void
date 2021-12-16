@@ -1,13 +1,14 @@
----@diagnostic disable: undefined-global, trailing-space, deprecated
--- local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/boop71/some-useless-code/main/kinlei-ui-keybinds.lua"))()
--- local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/boop71/cappuccino/main/v3/notification.lua"))()
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/main/vapelib.lua"))()
 
 --#region Functions
+local ws = game:GetService("Workspace")
+local reps = game:GetService("ReplicatedStorage")
+local players = game:GetService("Players")
 local rs = game:GetService("RunService")
+local ts = game:GetService("TweenService")
 
-local plr = game.Players.LocalPlayer
-local cam = workspace.CurrentCamera
+local plr = players.LocalPlayer
+local cam = ws.CurrentCamera
 
 local speedToggled = false
 local jumpToggled = false
@@ -23,9 +24,9 @@ function AntiAFK()
     local client = game:GetService("VirtualUser")
 
     plr.Idled:Connect(function()
-        client:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+        client:Button2Down(Vector2.new(0,0),cam.CFrame)
         wait(1)
-        client:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+        client:Button2Up(Vector2.new(0,0),cam.CFrame)
     end)
 end
 
@@ -67,52 +68,10 @@ function SuperJump(toggled)
     end
 end
 
-function Chams(toggled) -- TODO: REWRITE WITH DRAWING API
-    if toggled then        
-        function CreateSG(name,parent,face)
-            local SurfaceGui = Instance.new("SurfaceGui",parent)
-            SurfaceGui.Parent = parent
-            SurfaceGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-            SurfaceGui.Face = Enum.NormalId[face]
-            SurfaceGui.LightInfluence = 0
-            SurfaceGui.ResetOnSpawn = false
-            SurfaceGui.Name = name
-            SurfaceGui.AlwaysOnTop = true
-            local Frame = Instance.new("Frame",SurfaceGui)
-            Frame.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
-            Frame.Size = UDim2.new(1,0,1,0)
-        end
-        
-        while wait(1) do
-            for i,v in pairs (game:GetService("Players"):GetPlayers()) do
-                if v ~= game:GetService("Players").LocalPlayer and v.Character ~= nil and v.Character:FindFirstChild("Head") and v.Character.Head:FindFirstChild("cham") == nil then
-                    for i,v in pairs (v.Character:GetChildren()) do
-                        if v:IsA("MeshPart") or v.Name == "Head" then
-                        CreateSG("cham",v,"Back")
-                        CreateSG("cham",v,"Front")
-                        CreateSG("cham",v,"Left")
-                        CreateSG("cham",v,"Right")
-                        CreateSG("cham",v,"Right")
-                        CreateSG("cham",v,"Top")
-                        CreateSG("cham",v,"Bottom")
-                        end
-                    end
-                end
-            end
-        end
-    else
-        for i,v in pairs(game.Players:GetPlayers()) do
-            if v ~= game.Players.LocalPlayer and v.Character ~= nil and v.Character:FindFirstChild("Head") and v.Character.Head:FindFirstChild("Cham") then
-                v.Character.Head:FindFirstChild("Cham"):Destroy()
-            end
-        end
-    end
-end
-
 function Tracers(toggled)
     tracersToggled = toggled
 
-    for _,v in pairs(game.Players:GetPlayers()) do
+    for _,v in pairs(players:GetPlayers()) do
         if v.Name ~= plr.Name then
             local tracer = Drawing.new("Line")
     
@@ -135,13 +94,13 @@ function Tracers(toggled)
                 else tracer.Visible = false end
             end)
 
-            game.Players.PlayerRemoving:Connect(function()
+            players.PlayerRemoving:Connect(function()
                 tracer.Visible = false
             end)
         end
     end
 
-    game.Players.PlayerAdded:Connect(function(player)
+    players.PlayerAdded:Connect(function(player)
         player.CharacterAdded:Connect(function(v)
             if v.Name ~= plr.Name then
                 local tracer = Drawing.new("Line")
@@ -165,7 +124,7 @@ function Tracers(toggled)
                     else tracer.Visible = false end
                 end)
     
-                game.Players.PlayerRemoving:Connect(function()
+                players.PlayerRemoving:Connect(function()
                     tracer.Visible = false
                 end)
             end
@@ -175,9 +134,6 @@ end
 
 function BloxburgAutofarm(type)
     repeat wait() until game:IsLoaded()
-
-    local rs = game.ReplicatedStorage
-    local ts = game:GetService("TweenService")
 
     local stats = rs.Stats[plr.Name]
     local dm = require(rs.Modules.DataManager)
@@ -217,7 +173,7 @@ function BloxburgAutofarm(type)
         ts:Create(plr.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFrame.new(868.464783, 13.6776829, 174.983795, -0.999945581, -6.58446098e-08, -0.0104347449, -6.6522297e-08, 1, 6.45977494e-08, 0.0104347449, 6.52883756e-08, -0.999945581)}):Play()
         
         while true do
-            local workstations = workspace.Environment.Locations.StylezHairStudio.HairdresserWorkstations
+            local workstations = ws.Environment.Locations.StylezHairStudio.HairdresserWorkstations
             for _,v in next, workstations:GetChildren() do
                 if (v.Occupied.Value) then
                     fireServer({Type = "FinishOrder", Workstation = v ,Order = getOrder(v.Occupied.Value)})
@@ -235,7 +191,7 @@ function BloxburgAutofarm(type)
         ts:Create(plr.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFrame.new(825.076355, 13.6776829, 276.091309, 0.0133343497, -5.09454665e-08, -0.999910772, 7.34347916e-09, 1, -5.08520621e-08, 0.999910772, -6.66474698e-09, 0.0133343497)}):Play()
         
         while true do
-            local workstations = workspace.Environment.Locations.BloxyBurgers.CashierWorkstations;
+            local workstations = ws.Environment.Locations.BloxyBurgers.CashierWorkstations;
             for _,v in next, workstations:GetChildren() do
                 if (v.Occupied.Value) then
                     fireServer({Type = "FinishOrder", Workstation = v, Order = getOrder(v.Occupied.Value)})
@@ -252,11 +208,11 @@ end
 --#region Init
 local window = lib:Window("Void",Color3.fromRGB(139, 80, 221),Enum.KeyCode.RightShift)
 
-local S1, S2, S4 = window:Tab("Player"), window:Tab("Server"), window:Tab("ESP")
+local S1, S2, S4, S5 = window:Tab("Player"), window:Tab("Server"), window:Tab("ESP"), window:Tab("Script Hub")
 --#endregion
 
 --#region Game : Bloxburg
-if (game.PlaceId == 185655149) then
+if game.PlaceId == 185655149 then
     local S3 = window:Tab("Bloxburg")
 
     S3:Label("Autofarm")
@@ -276,7 +232,7 @@ end
 --#endregion
 
 --#region Game : Nuclear Bomb Testing Facility
-if (game.PlaceId == 6153709) then
+if game.PlaceId == 6153709 then
     local S3 = window:Tab("Nuclear Bomb Testing Facility")
 
     local weaponList = {
@@ -368,6 +324,10 @@ if (game.PlaceId == 6153709) then
 end
 --#endregion
 
+--#region Game : Jailbreak
+-- nothing yet bruh
+--#endregion
+
 --#region Player
 S1:Label("General")
 
@@ -389,7 +349,34 @@ S2:Button("Rejoin Server", function() game:GetService("TeleportService"):Telepor
 --#endregion
 
 --#region ESP
-S4:Toggle("Chams ESP",false,function(v) Chams(v) end)
 S4:Toggle("Tracers",false,function(v) Tracers(v) end)
+--#endregion
+
+--#region Script Hub
+S5:Label("Essential")
+S5:Button("Simple Spy",function() loadstring(game:HttpGet(""))() end) -- load from github once done
+S5:Button("Dark Dev V4",function() loadstring(game:HttpGetAsync("https://pastebin.com/raw/iuQPQq4M"))() end) 
+S5:Label("Hubs")
+S5:Button("Solaris",function() loadstring(game:HttpGet('https://solarishub.dev/script.lua',true))() end)
+S5:Button("Domain Hub",function() loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexsoftworks/Domain/main/source'),true))() end)
+S5:Label("Jailbreak")
+S5:Button("Autorob",function() loadstring(game:HttpGet("https://raw.githubusercontent.com/wawsdasdacx/ohascriptnrrewading/main/jbsaxcriptidk1"))() end)
+S5:Label("Lumber Tycoon 2")
+S5:Button("Ancestor",function() loadstring(game:HttpGetAsync'https://ancestordevelopment.wtf/Ancestor')('Ancestor V3 Winning :D') end)
+S5:Button("Dirt",function() loadstring(game:HttpGet("https://dirtgui.xyz/Lt2.lua",true))() end)
+S5:Button("Bark",function() loadstring(game:HttpGetAsync'https://cdn.applebee1558.com/bark/bark.lua')('bark > blood :)') end)
+S5:Label("Apocalypse Rising")
+S5:Button("Tripp",function() loadstring(game:HttpGet(""))() end) -- load from github once done
+S5:Label("Bedwars")
+S5:Button("Vape",function() loadstring(game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua", true))() end)
+S5:Label("Clone Tycoon 2")
+S5:Button("Script",function() task.spawn(loadstring(game:HttpGet("https://paste.ee/r/N0fo7/0")),[[also if it doesn't load look in the console for some warns / errors]]) end)
+S5:Label("Simulators")
+S5:Button("Mining Simulator",function() loadstring(game:HttpGet(("https://raw.githubusercontent.com/GuentherHade/Roblox/main/Obfuscated.lua"),true))() end)
+S5:Button("Pet Simulator X",function() loadstring(game:HttpGet("https://pastebin.com/raw/95HthyJq"))() end)
+S5:Label("Phantom Forces")
+S5:Button("ehub.fun",function() loadstring(game:HttpGet("https://ehub.fun/raw/script.lua"))() end)
+S5:Label("Prison Life")
+S5:Button("Admin Commands",function() loadstring(game:HttpGet(('https://raw.githubusercontent.com/XTheMasterX/Scripts/Main/PrisonLife'),true))() end)
 --#endregion
 --#endregion
