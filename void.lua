@@ -1,4 +1,4 @@
-local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/main/vapelib.lua"))()
+local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/experimental/vapelib.lua"))()
 
 --#region Functions
 local ws = game:GetService("Workspace")
