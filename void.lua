@@ -10,13 +10,6 @@ local ts = game:GetService("TweenService")
 local plr = players.LocalPlayer
 local cam = ws.CurrentCamera
 
-local speedToggled = false
-local jumpToggled = false
-
-local tracersToggled = false
-
-local nbtfInfiniteAmmoToggled = false
-
 local walkSpeed = 16
 local jumpPower = 50
 
@@ -31,45 +24,38 @@ function AntiAFK()
 end
 
 function Speed(toggled)
-    if toggled then
-        speedToggled = true
+    local speedToggled = toggled
 
-        spawn(function() 
-            while speedToggled do
-                plr.Character.Humanoid.WalkSpeed = walkSpeed
+    spawn(function() 
+        while speedToggled do
+            plr.Character.Humanoid.WalkSpeed = walkSpeed
 
-                if not speedToggled then break end
+            if not speedToggled then break end
 
-                wait()
-            end
-        end)
-    else
-        speedToggled = false
-        plr.Character.Humanoid.WalkSpeed = 16
-    end
+            wait()
+        end
+    end)
+
+    if not speedToggled then plr.Chracter.Humanoid.WalkSpeed = 16 end
 end
 
 function SuperJump(toggled)
-    if toggled then
-        jumpToggled = true
+    local jumpToggled = toggled
 
-        spawn(function() 
-            while jumpToggled do
-                plr.Character.Humanoid.JumpPower = jumpPower
+    spawn(function() 
+        while jumpToggled do
+            plr.Character.Humanoid.JumpPower = jumpPower
 
-                if not jumpToggled then break end
+            if not jumpToggled then break end
+            wait()
+        end
+    end)
 
-                wait()
-            end
-        end)
-    else
-        jumpPower = false
-        plr.Character.Humanoid.JumpPower = 50
-    end
+    if not jumpToggled then plr.Character.Humanoid.JumpPower = 50 end
 end
 
 function Tracers(toggled)
-    tracersToggled = toggled
+    local tracersToggled = toggled
 
     for _,v in pairs(players:GetPlayers()) do
         if v.Name ~= plr.Name then
@@ -234,6 +220,7 @@ end
 --#region Game : Nuclear Bomb Testing Facility
 if game.PlaceId == 6153709 then
     local S3 = window:Tab("Nuclear Bomb Testing Facility")
+    local nbtfInfiniteAmmoToggled = false
 
     local weaponList = {
         "UMP-9",
@@ -346,7 +333,6 @@ S1:Slider("Jump Power",50,1000,50,function(v) jumpPower = v end)
 
 --#region Server
 S2:Button("Rejoin Server", function() game:GetService("TeleportService"):Teleport(game.PlaceId, plr) end)
-S2:Button("Start Remote Spy", function()  end)
 --#endregion
 
 --#region ESP
