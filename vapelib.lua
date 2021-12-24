@@ -7,12 +7,8 @@ local Mouse = LocalPlayer:GetMouse()
 local PresetColor = Color3.fromRGB(44, 120, 224)
 local CloseBind = Enum.KeyCode.RightControl
 
-if game.CoreGui:FindFirstChild("MLIcczTaai") then
-    game.CoreGui["MLIcczTaai"]:Destroy()
-end
-
 local ui = Instance.new("ScreenGui")
-ui.Name = "MLIcczTaai"
+ui.Name = "mXMtjKSitpp"
 ui.Parent = game.CoreGui
 ui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -90,6 +86,12 @@ local function MakeDraggable(topbarobject, object)
 end
 
 function lib:Window(text, preset, closebind)
+    if game.CoreGui:FindFirstChild(text) then
+        game.CoreGui[text]:Destroy()
+    end
+    
+    ui.Name = text
+
     CloseBind = closebind or Enum.KeyCode.RightControl
     PresetColor = preset or Color3.fromRGB(44, 120, 224)
     fs = false
@@ -148,11 +150,9 @@ function lib:Window(text, preset, closebind)
     UserInputService.InputBegan:Connect(
         function(io, p)
             if io.KeyCode == CloseBind then
-                if uitoggled == false then
+                if not uitoggled then
                     Main:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true)
                     uitoggled = true
-                    wait(.5)
-                    knixhub.Enabled = false
                 else
                     Main:TweenSize(
                         UDim2.new(0, 560, 0, 319),
@@ -161,7 +161,6 @@ function lib:Window(text, preset, closebind)
                         .6,
                         true
                     )
-                    knixhub.Enabled = true
                     uitoggled = false
                 end
             end
@@ -1476,6 +1475,7 @@ function lib:Window(text, preset, closebind)
             Label.Name = "Button"
             Label.Parent = Tab
             Label.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
+            Label.BackgroundTransparency = 1.000
             Label.Size = UDim2.new(0, 363, 0, 42)
             Label.AutoButtonColor = false
             Label.Font = Enum.Font.SourceSans

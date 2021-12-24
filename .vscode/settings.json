@@ -1,0 +1,6 @@
+{
+    "robloxLsp.diagnostics.disable": [
+        "invalid-class-name",
+        "undefined-global"
+    ]
+}
