@@ -200,19 +200,20 @@ local S1, S2, S4, S5 = window:Tab("Player"), window:Tab("Server"), window:Tab("E
 --#region Game : Bloxburg
 if game.PlaceId == 185655149 then
     local S3 = window:Tab("Bloxburg")
+	local handler = require(game:GetService("Players").LocalPlayer.PlayerGui.MainGUI.Scripts.GUIHandler);
 
     S3:Label("Autofarm")
 
     S3:Button("Bloxburg Autofarm : Hair Dressing", function()
-        lib:Notification("Autofarm Started", "Hairdressing autofarm has begun.", "Ok")
-
         BloxburgAutofarm(1)
+		handler:AlertBox("Started Hair Dressing Autofarm. To ensure you don't get banned (still could happen), make sure to as many cars as possible and sell them at the end of your shift.", "Autofarm Started", 5);
     end)
 
     S3:Button("Bloxburg Autofarm : Cashier", function()
         lib:Notification("Autofarm Started", "Cashier autofarm has begun.", "Ok")
 
         BloxburgAutofarm(2)
+		handler:AlertBox("Started Cashier Autofarm. To ensure you don't get banned (still could happen), make sure to as many cars as possible and sell them at the end of your shift.", "Autofarm Started", 5);
     end)
 end
 --#endregion
@@ -246,12 +247,12 @@ if game.PlaceId == 6153709 then
                     tool.Configuration.RecoilMin.Value = 0
                     tool.Configuration.RecoilMax.Value = 0
                     tool.Configuration.RecoilDecay.Value = 0
-                    tool.Configuration.HitDamage.Value = 999
+                    tool.Configuration.HitDamage.Value = math.huge
                     tool.Configuration.MuzzleFlashSize1.Value = 0
                     tool.Configuration.MuzzleFlashSize0.Value = 0
                     tool.Configuration.TotalRecoilMax.Value = 0
                     tool.Configuration.MaxSpread.Value = 0
-                    tool.Configuration.MaxDistance.Value = 999999
+                    tool.Configuration.MaxDistance.Value = math.huge
                 end
             end
         end
@@ -286,9 +287,9 @@ if game.PlaceId == 6153709 then
                     for _,tool in pairs(plr.Backpack:GetChildren()) do
                         for _,weaponName in pairs(weaponList) do
                             if string.match(tool.Name, weaponName) then
-                                tool.Configuration.AmmoReserves.Value = 999999
-                                tool.Configuration.AmmoCapacity.Value = 999999
-                                tool.CurrentAmmo.Value = 999999
+                                tool.Configuration.AmmoReserves.Value = math.huge
+                                tool.Configuration.AmmoCapacity.Value = math.huge
+                                tool.CurrentAmmo.Value = math.huge
                             end
                         end
                     end
@@ -296,9 +297,9 @@ if game.PlaceId == 6153709 then
                     for _,tool in pairs(plr.Character:GetChildren()) do
                         for _,weaponName in pairs(weaponList) do
                             if string.match(tool.Name, weaponName) then
-                                tool.Configuration.AmmoReserves.Value = 999999
-                                tool.Configuration.AmmoCapacity.Value = 999999
-                                tool.CurrentAmmo.Value = 999999
+                                tool.Configuration.AmmoReserves.Value = math.huge
+                                tool.Configuration.AmmoCapacity.Value = math.huge
+                                tool.CurrentAmmo.Value = math.huge
                             end
                         end
                     end
