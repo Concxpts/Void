@@ -84,6 +84,7 @@ function Lighting(t)
         tr.WaterTransparency = 1
         tr.WaterReflectance = 1
     else
+        print("Kachow")
         cc:Destroy()
         sr:Destroy()
         b:Destroy()
