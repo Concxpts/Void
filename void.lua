@@ -23,8 +23,8 @@ function AntiAFK()
     end)
 end
 
-function Speed(toggled)
-    local speedToggled = toggled
+function Speed(t)
+    local speedToggled = t
 
     spawn(function() 
         while speedToggled do
@@ -39,8 +39,8 @@ function Speed(toggled)
     if not speedToggled then plr.Chracter.Humanoid.WalkSpeed = 16 end
 end
 
-function SuperJump(toggled)
-    local jumpToggled = toggled
+function SuperJump(t)
+    local jumpToggled = t
 
     spawn(function() 
         while jumpToggled do
@@ -54,8 +54,47 @@ function SuperJump(toggled)
     if not jumpToggled then plr.Character.Humanoid.JumpPower = 50 end
 end
 
-function Tracers(toggled)
-    local tracersToggled = toggled
+function Lighting(t)
+    local lightingToggled = t
+
+    local l = game:GetService("Lighting")
+    local tr = ws.Terrain
+
+    local cc = Instance.new("ColorCorrectionEffect")
+    local sr = Instance.new("SunRaysEffect")
+    local b = Instance.new("BlurEffect")
+    local a = Instance.new("Atmosphere")
+    local s = Instance.new("Sky")
+    local c = Instance.new("Clouds")
+
+    if lightingToggled then
+        l.Brightness = 1
+        l.EnvironmentDiffuseScale = .2
+        l.EnvironmentSpecularScale = .82
+        sr.Parent = Lighting
+        a.Parent = Lighting
+        s.Parent = Lighting
+        s.SunAngularSize = 5
+        b.Size = 3.921
+        b.Parent = Lighting
+        cc.Parent = Lighting
+        cc.Saturation = .092
+        c.Parent = Lighting
+
+        tr.WaterTransparency = 1
+        tr.WaterReflectance = 1
+    else
+        cc:Destroy()
+        sr:Destroy()
+        b:Destroy()
+        a:Destroy()
+        s:Destroy()
+        c:Destroy()
+    end
+end
+
+function Tracers(t)
+    local tracersToggled = t
 
     for _,v in pairs(players:GetPlayers()) do
         if v.Name ~= plr.Name then
@@ -118,11 +157,11 @@ function Tracers(toggled)
     end)
 end
 
-function BloxburgAutofarm(type)
+function BloxburgAutofarm(t)
     repeat wait() until game:IsLoaded()
 
-    local stats = rs.Stats[plr.Name]
-    local dm = require(rs.Modules.DataManager)
+    local stats = reps.Stats[plr.Name]
+    local dm = require(reps.Modules.DataManager)
 
     local function fireServer(data)
         local oldI = getfenv(dm.FireServer).i
@@ -149,7 +188,7 @@ function BloxburgAutofarm(type)
         end
     end
 
-    if (type == 1) then
+    if (t == 1) then
         if (stats.Job.Value ~= "StylezHairdresser") then
             jobManager:GoToWork("StylezHairdresser")
         end
@@ -168,7 +207,7 @@ function BloxburgAutofarm(type)
 
             wait()
         end
-    elseif(type == 2) then
+    elseif(t == 2) then
         if (stats.Job.Value ~= "BloxyBurgersCashier") then
             jobManager:GoToWork("BloxyBurgersCashier")
         end;
@@ -333,6 +372,7 @@ S1:Slider("Jump Power",50,1000,50,function(v) jumpPower = v end)
 --#endregion
 
 --#region Server
+S2:Toggle("Lighting Enhancemnets",false,function(v) Lighting(v) end)
 S2:Button("Rejoin Server", function() game:GetService("TeleportService"):Teleport(game.PlaceId, plr) end)
 --#endregion
 
