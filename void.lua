@@ -1,6 +1,5 @@
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/experimental/vapelib.lua"))()
 
---#region Functions
 local ws = game:GetService("Workspace")
 local reps = game:GetService("ReplicatedStorage")
 local players = game:GetService("Players")
@@ -8,6 +7,7 @@ local rs = game:GetService("RunService")
 local ts = game:GetService("TweenService")
 
 local plr = players.LocalPlayer
+local char = plr.Character
 local cam = ws.CurrentCamera
 
 local walkSpeed = 16
@@ -54,6 +54,24 @@ function SuperJump(t)
     if not jumpToggled then plr.Character.Humanoid.JumpPower = 50 end
 end
 
+function InfiniteJump(t)
+    local infiniteJumpToggled = t
+
+    local function Action(Object, Function) if Object ~= nil then Function(Object); end end
+
+    game:GetService("UserInputService").InputBegan:connect(function(UserInput)
+        if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space and infiniteJumpToggled then
+            Action(char.Humanoid, function(self)
+                if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+                    Action(self.Parent.HumanoidRootPart, function(self)
+                        self.Velocity = Vector3.new(0, jumpPower, 0);
+                    end)
+                end
+            end)
+        end
+    end)
+end
+
 function Lighting(t)
     local lightingToggled = t
 
@@ -67,7 +85,10 @@ function Lighting(t)
     local s = Instance.new("Sky")
     local c = Instance.new("Clouds")
 
+    print(lightingToggled)
+
     if lightingToggled then
+        print(t)
         l.Brightness = 1
         l.EnvironmentDiffuseScale = .2
         l.EnvironmentSpecularScale = .82
@@ -84,7 +105,6 @@ function Lighting(t)
         tr.WaterTransparency = 1
         tr.WaterReflectance = 1
     else
-        print("Kachow")
         cc:Destroy()
         sr:Destroy()
         b:Destroy()
@@ -366,10 +386,12 @@ end)
 S1:Label("Movement")
 
 S1:Toggle("Speed",false,function(v) Speed(v) end)
-S1:Slider("Speed Amount",16,150,16,function(v) walkSpeed = v end)
+S1:Slider("Speed Amount",16,150,0,function(v) walkSpeed = v end)
 
 S1:Toggle("Super Jump",false,function(v) SuperJump(v) end)
-S1:Slider("Jump Power",50,1000,50,function(v) jumpPower = v end)
+S1:Toggle("Infinite Jump",false,function(v) InfiniteJump(v) end)
+S1:Slider("Jump Power",50,1000,0,function(v) jumpPower = v end)
+
 --#endregion
 
 --#region Server
