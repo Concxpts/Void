@@ -1,3 +1,5 @@
+-- ISSUES: SPEED DOESN'T UNTOGGLE, CUSTOM LIGHTING CAN'T BE DISABLED, TRACERS CAN'T BE UNTOGGLED, RESET CHARACTER DOESN'T WORK
+
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/experimental/vapelib.lua"))()
 
 local ws = game:GetService("Workspace")
@@ -8,11 +10,13 @@ local ts = game:GetService("TweenService")
 
 local plr = players.LocalPlayer
 local char = plr.Character
+local m = plr:GetMouse()
 local cam = ws.CurrentCamera
 
 local walkSpeed = 16
 local jumpPower = 50
 
+--#region Functions
 function AntiAFK()
     local client = game:GetService("VirtualUser")
 
@@ -112,70 +116,6 @@ function Lighting(t)
         s:Destroy()
         c:Destroy()
     end
-end
-
-function Tracers(t)
-    local tracersToggled = t
-
-    for _,v in pairs(players:GetPlayers()) do
-        if v.Name ~= plr.Name then
-            local tracer = Drawing.new("Line")
-    
-            rs.Heartbeat:Connect(function()
-                if v.Character ~= nil and v.Character.HumanoidRootPart ~= nil then
-                    local pos, size = v.Character.HumanoidRootPart.CFrame, v.Character.HumanoidRootPart.Size * 1
-                    local vector, onScreen = cam:WorldToViewportPoint(pos * CFrame.new(0, -size.Y, 0).p)
-                    
-                    tracer.Thickness = 2
-                    tracer.Transparency = 1
-                    tracer.Color = Color3.fromRGB(255,255,255)
-
-                    tracer.From = Vector2.new(cam.ViewportSize.X / 2, cam.ViewportSize.Y / 2)
-
-                    if onScreen == true then
-                        tracer.To = Vector2.new(vector.X, vector.Y)
-                        
-                        tracer.Visible = tracersToggled
-                    else tracer.Visible = false end
-                else tracer.Visible = false end
-            end)
-
-            players.PlayerRemoving:Connect(function()
-                tracer.Visible = false
-            end)
-        end
-    end
-
-    players.PlayerAdded:Connect(function(player)
-        player.CharacterAdded:Connect(function(v)
-            if v.Name ~= plr.Name then
-                local tracer = Drawing.new("Line")
-        
-                rs.Heartbeat:Connect(function()
-                    if v.Character ~= nil and v.Character.HumanoidRootPart ~= nil then
-                        local pos, size = v.Character.HumanoidRootPart.CFrame, v.Character.HumanoidRootPart.Size * 1
-                        local vector, onScreen = cam:WorldToViewportPoint(pos * CFrame.new(0, -size.Y, 0).p)
-                        
-                        tracer.Thickness = 2
-                        tracer.Transparency = 1
-                        tracer.Color = Color3.fromRGB(255,255,255)
-    
-                        tracer.From = Vector2.new(cam.ViewportSize.X / 2, cam.ViewportSize.Y / 2)
-    
-                        if onScreen == true then
-                            tracer.To = Vector2.new(vector.X, vector.Y)
-                            
-                            tracer.Visible = tracersToggled
-                        else tracer.Visible = false end
-                    else tracer.Visible = false end
-                end)
-    
-                players.PlayerRemoving:Connect(function()
-                    tracer.Visible = false
-                end)
-            end
-        end)
-    end)
 end
 
 function BloxburgAutofarm(t)
@@ -372,15 +312,25 @@ if game.PlaceId == 6153709 then
 end
 --#endregion
 
---#region Game : Jailbreak
--- nothing yet bruh
---#endregion
-
 --#region Player
 S1:Label("General")
 
-S1:Button("Anti-AFK Kick", function()
-    AntiAFK()
+S1:Button("Anti-AFK Kick", function() AntiAFK() end)
+
+S1:Toggle("Toggle Badge Notifications",false,function(v)
+    if v then
+        game:GetService("StarterGui"):SetCore("BadgesNotificationsActive", true)
+    else
+        game:GetService("StarterGui"):SetCore("BadgesNotificationsActive", false)
+    end
+end)
+
+S1:Toggle("Toggle Point Notifications",false,function(v)
+    if v then
+        game:GetService("StarterGui"):SetCore("PointsNotificationsActive", true)
+    else
+        game:GetService("StarterGui"):SetCore("PointsNotificationsActive", false)
+    end
 end)
 
 S1:Label("Movement")
@@ -391,16 +341,11 @@ S1:Slider("Speed Amount",16,150,0,function(v) walkSpeed = v end)
 S1:Toggle("Super Jump",false,function(v) SuperJump(v) end)
 S1:Toggle("Infinite Jump",false,function(v) InfiniteJump(v) end)
 S1:Slider("Jump Power",50,1000,0,function(v) jumpPower = v end)
-
 --#endregion
 
 --#region Server
 S2:Toggle("Lighting Enhancemnets",false,function(v) Lighting(v) end)
 S2:Button("Rejoin Server", function() game:GetService("TeleportService"):Teleport(game.PlaceId, plr) end)
---#endregion
-
---#region ESP
-S4:Toggle("Tracers",false,function(v) Tracers(v) end)
 --#endregion
 
 --#region Script Hub
