@@ -73,9 +73,7 @@ function InfiniteJump(t)
     end)
 end
 
-function Lighting(t)
-    local lightingToggled = t
-
+function Lighting()
     local l = game:GetService("Lighting")
     local tr = ws.Terrain
 
@@ -86,33 +84,21 @@ function Lighting(t)
     local s = Instance.new("Sky")
     local c = Instance.new("Clouds")
 
-    print(lightingToggled)
+    l.Brightness = 1
+    l.EnvironmentDiffuseScale = .2
+    l.EnvironmentSpecularScale = .82
+    sr.Parent = Lighting
+    a.Parent = Lighting
+    s.Parent = Lighting
+    s.SunAngularSize = 5
+    b.Size = 3.921
+    b.Parent = Lighting
+    cc.Parent = Lighting
+    cc.Saturation = .092
+    c.Parent = Lighting
 
-    if lightingToggled then
-        print(t)
-        l.Brightness = 1
-        l.EnvironmentDiffuseScale = .2
-        l.EnvironmentSpecularScale = .82
-        sr.Parent = Lighting
-        a.Parent = Lighting
-        s.Parent = Lighting
-        s.SunAngularSize = 5
-        b.Size = 3.921
-        b.Parent = Lighting
-        cc.Parent = Lighting
-        cc.Saturation = .092
-        c.Parent = Lighting
-
-        tr.WaterTransparency = 1
-        tr.WaterReflectance = 1
-    else
-        cc:Destroy()
-        sr:Destroy()
-        b:Destroy()
-        a:Destroy()
-        s:Destroy()
-        c:Destroy()
-    end
+    tr.WaterTransparency = 1
+    tr.WaterReflectance = 1
 end
 
 function BloxburgAutofarm(t)
@@ -341,7 +327,7 @@ S1:Slider("Jump Power",50,1000,0,function(v) jumpPower = v end)
 --#endregion
 
 --#region Server
-S2:Toggle("Lighting Enhancemnets",false,function(v) Lighting(v) end)
+S2:Button("Lighting Enhancemnets",function(v) Lighting(v) end)
 S2:Button("Rejoin Server", function() game:GetService("TeleportService"):Teleport(game.PlaceId, plr) end)
 --#endregion
 
