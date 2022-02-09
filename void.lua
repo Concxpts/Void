@@ -1,4 +1,4 @@
--- ISSUES: SPEED DOESN'T UNTOGGLE, CUSTOM LIGHTING CAN'T BE DISABLED, TRACERS CAN'T BE UNTOGGLED, RESET CHARACTER DOESN'T WORK
+-- ISSUES: SPEED DOESN'T UNTOGGLE, CUSTOM LIGHTING CAN'T BE DISABLED
 
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/experimental/vapelib.lua"))()
 
@@ -31,12 +31,10 @@ function Speed(t)
     local speedToggled = t
 
     spawn(function() 
-        while speedToggled do
+        while speedToggled do wait()
             plr.Character.Humanoid.WalkSpeed = walkSpeed
 
             if not speedToggled then break end
-
-            wait()
         end
     end)
 
@@ -47,11 +45,10 @@ function SuperJump(t)
     local jumpToggled = t
 
     spawn(function() 
-        while jumpToggled do
+        while jumpToggled do wait()
             plr.Character.Humanoid.JumpPower = jumpPower
 
             if not jumpToggled then break end
-            wait()
         end
     end)
 
