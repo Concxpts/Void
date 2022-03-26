@@ -1,16 +1,91 @@
 # Welcome to Void.
 ## Vape UI Library
-I have edited the Vape UI Library created by [dawid](https://v3rmillion.net/member.php?action=profile&uid=1052423)/[post](https://v3rmillion.net/showthread.php?tid=1098651). The changes that I have made are deleting the old library upon another inject for the people that do that, and have also changed the name of the actual UI in the workspace from "ui" to a jumble of letters to allow for less likelyhood of being caught as a script and to also prevent any chance of getting overrided by possible game UIs.
+I have edited the Vape UI Library created by [dawid](https://v3rmillion.net/member.php?action=profile&uid=1052423)/[post](https://v3rmillion.net/showthread.php?tid=1098651). I have made a few quality of life changes and optimizations to make the UI library work for Void in the best way possible. I will be adding on to it in the future to implement things like remote spies, lua code editors, etc.
 
 ## Void
-Void is a script that I have been working on since I got into Roblox scripting. It is powerful, and has a load of features. There will be a list of supported games and all the features along with changelogs in this readme file in the future.
+Void is a script that includes a massive script hub, a clean GUI, and good features that are game-specific and non-game specific.
+
+### Feature List
+#### Player
+- Speed Editor
+- Jump Power Editor
+- Anti-AFK Kick
+- Toggle Point Notifications
+- Toggle Badge Notifications
+- Graphic Enhancement
+
+#### Server
+- Rejoin Server
+
+#### ESP
+- Tracers
+
+#### Script Hub
+- Simple Spy
+- Dark Dex V3
+- Dark Dex V4
+- Solaris
+- Domain Hub
+- Jailbreak Autorob
+- Ancestor
+- Dirt
+- Bark
+- Tripp
+- Vape
+- Clone Tycoon 2 Script
+- Mining Simulator Script
+- Pet Simulator X Script
+- ehub.fun
+- Prison Life Admin Commands
+
+#### Bloxburg
+- Autofarm
+
+#### Nuclear Bomb Testing Facility
+- Infinite Ammo
+- God Gun
+
+## Void Lite
+Void Lite is a script that includes a massive script hub, a clean GUI, and good features that are not game specific.
+
+### Feature List
+#### Player
+- Speed Editor
+- Jump Power Editor
+- Anti-AFK Kick
+- Toggle Point Notifications
+- Toggle Badge Notifications
+- Graphic Enhancement
+
+#### Server
+- Rejoin Server
+
+#### ESP
+- Tracers
+
+#### Script Hub
+- Simple Spy
+- Dark Dex V3
+- Dark Dex V4
+- Solaris
+- Domain Hub
+- Jailbreak Autorob
+- Ancestor
+- Dirt
+- Bark
+- Tripp
+- Vape
+- Clone Tycoon 2 Script
+- Mining Simulator Script
+- Pet Simulator X Script
+- ehub.fun
+- Prison Life Admin Commands
 
 ## Loadstring
 `loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/experimental/void.lua"))()` 
--- Experimental branch (possibly buggy, unstable, but could have more features)
 
-`loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/main/void.lua"))()`
--- Master branch (stable, but could have less features
+## Community
+I would love for Void to become one of the largest scripts on Roblox, allowing you to play your favorite games how you want. I would love for volunteers to help it and make it a community project, discovering new cheats and exploits like kicking players or crashing them, game cheats, etc.
 
-## Community Features
-If Void gets big and you're interested in adding features and possibly even making them apart of the official release, feel free to fork the files and create pull requests. It would be great to have a community project to create one of the greatest scripts.
+## The future of Void
+Void may become even bigger than just a script. I may make it an exploit, with very powerful tools and APIs, with the Void script being an internal feature.

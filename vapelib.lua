@@ -7,6 +7,10 @@ local Mouse = LocalPlayer:GetMouse()
 local PresetColor = Color3.fromRGB(44, 120, 224)
 local CloseBind = Enum.KeyCode.RightControl
 
+local ui = Instance.new("ScreenGui")
+ui.Parent = game.CoreGui
+ui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
 coroutine.wrap(
     function()
         while wait() do
@@ -85,11 +89,7 @@ function lib:Window(text, preset, closebind)
         game.CoreGui[text]:Destroy()
     end
     
-    local ui = Instance.new("ScreenGui")
-    ui.Name = "mXMtjKSitpp"
-    ui.Parent = game.CoreGui
-    ui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
+    ui.Name = text
     CloseBind = closebind or Enum.KeyCode.RightControl
     PresetColor = preset or Color3.fromRGB(44, 120, 224)
     fs = false

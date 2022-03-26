@@ -1,6 +1,7 @@
+-- ISSUES: SPEED DOESN'T UNTOGGLE, CUSTOM LIGHTING CAN'T BE DISABLED
+
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/experimental/vapelib.lua"))()
 
---#region Functions
 local ws = game:GetService("Workspace")
 local reps = game:GetService("ReplicatedStorage")
 local players = game:GetService("Players")
@@ -8,11 +9,14 @@ local rs = game:GetService("RunService")
 local ts = game:GetService("TweenService")
 
 local plr = players.LocalPlayer
+local char = plr.Character
+local m = plr:GetMouse()
 local cam = ws.CurrentCamera
 
 local walkSpeed = 16
 local jumpPower = 50
 
+--#region Functions
 function AntiAFK()
     local client = game:GetService("VirtualUser")
 
@@ -23,106 +27,85 @@ function AntiAFK()
     end)
 end
 
-function Speed(toggled)
-    local speedToggled = toggled
+function Speed(t)
+    local speedToggled = t
 
     spawn(function() 
-        while speedToggled do
+        while speedToggled do wait()
             plr.Character.Humanoid.WalkSpeed = walkSpeed
 
             if not speedToggled then break end
-
-            wait()
         end
     end)
 
     if not speedToggled then plr.Chracter.Humanoid.WalkSpeed = 16 end
 end
 
-function SuperJump(toggled)
-    local jumpToggled = toggled
+function SuperJump(t)
+    local jumpToggled = t
 
     spawn(function() 
-        while jumpToggled do
+        while jumpToggled do wait()
             plr.Character.Humanoid.JumpPower = jumpPower
 
             if not jumpToggled then break end
-            wait()
         end
     end)
 
     if not jumpToggled then plr.Character.Humanoid.JumpPower = 50 end
 end
 
-function Tracers(toggled)
-    local tracersToggled = toggled
+function InfiniteJump(t)
+    local infiniteJumpToggled = t
 
-    for _,v in pairs(players:GetPlayers()) do
-        if v.Name ~= plr.Name then
-            local tracer = Drawing.new("Line")
-    
-            rs.Heartbeat:Connect(function()
-                if v.Character ~= nil and v.Character.HumanoidRootPart ~= nil then
-                    local pos, size = v.Character.HumanoidRootPart.CFrame, v.Character.HumanoidRootPart.Size * 1
-                    local vector, onScreen = cam:WorldToViewportPoint(pos * CFrame.new(0, -size.Y, 0).p)
-                    
-                    tracer.Thickness = 2
-                    tracer.Transparency = 1
-                    tracer.Color = Color3.fromRGB(255,255,255)
+    local function Action(Object, Function) if Object ~= nil then Function(Object); end end
 
-                    tracer.From = Vector2.new(cam.ViewportSize.X / 2, cam.ViewportSize.Y / 2)
-
-                    if onScreen == true then
-                        tracer.To = Vector2.new(vector.X, vector.Y)
-                        
-                        tracer.Visible = tracersToggled
-                    else tracer.Visible = false end
-                else tracer.Visible = false end
-            end)
-
-            players.PlayerRemoving:Connect(function()
-                tracer.Visible = false
+    game:GetService("UserInputService").InputBegan:connect(function(UserInput)
+        if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space and infiniteJumpToggled then
+            Action(char.Humanoid, function(self)
+                if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+                    Action(self.Parent.HumanoidRootPart, function(self)
+                        self.Velocity = Vector3.new(0, jumpPower, 0);
+                    end)
+                end
             end)
         end
-    end
-
-    players.PlayerAdded:Connect(function(player)
-        player.CharacterAdded:Connect(function(v)
-            if v.Name ~= plr.Name then
-                local tracer = Drawing.new("Line")
-        
-                rs.Heartbeat:Connect(function()
-                    if v.Character ~= nil and v.Character.HumanoidRootPart ~= nil then
-                        local pos, size = v.Character.HumanoidRootPart.CFrame, v.Character.HumanoidRootPart.Size * 1
-                        local vector, onScreen = cam:WorldToViewportPoint(pos * CFrame.new(0, -size.Y, 0).p)
-                        
-                        tracer.Thickness = 2
-                        tracer.Transparency = 1
-                        tracer.Color = Color3.fromRGB(255,255,255)
-    
-                        tracer.From = Vector2.new(cam.ViewportSize.X / 2, cam.ViewportSize.Y / 2)
-    
-                        if onScreen == true then
-                            tracer.To = Vector2.new(vector.X, vector.Y)
-                            
-                            tracer.Visible = tracersToggled
-                        else tracer.Visible = false end
-                    else tracer.Visible = false end
-                end)
-    
-                players.PlayerRemoving:Connect(function()
-                    tracer.Visible = false
-                end)
-            end
-        end)
     end)
 end
 
-function BloxburgAutofarm(type)
+function Lighting()
+    local l = game:GetService("Lighting")
+    local tr = ws.Terrain
+
+    local cc = Instance.new("ColorCorrectionEffect")
+    local sr = Instance.new("SunRaysEffect")
+    local b = Instance.new("BlurEffect")
+    local a = Instance.new("Atmosphere")
+    local s = Instance.new("Sky")
+    local c = Instance.new("Clouds")
+
+    l.Brightness = 1
+    l.EnvironmentDiffuseScale = .2
+    l.EnvironmentSpecularScale = .82
+    sr.Parent = Lighting
+    a.Parent = Lighting
+    s.Parent = Lighting
+    s.SunAngularSize = 5
+    b.Size = 3.921
+    b.Parent = Lighting
+    cc.Parent = Lighting
+    cc.Saturation = .092
+    c.Parent = Lighting
+
+    tr.WaterTransparency = 1
+    tr.WaterReflectance = 1
+end
+
+function BloxburgAutofarm(t)
     repeat wait() until game:IsLoaded()
 
-    local stats = rs.Stats[plr.Name]
-    local dm = require(rs.Modules.DataManager)
+    local stats = reps.Stats[plr.Name]
+    local dm = require(reps.Modules.DataManager)
 
     local function fireServer(data)
         local oldI = getfenv(dm.FireServer).i
@@ -149,7 +132,7 @@ function BloxburgAutofarm(type)
         end
     end
 
-    if (type == 1) then
+    if (t == 1) then
         if (stats.Job.Value ~= "StylezHairdresser") then
             jobManager:GoToWork("StylezHairdresser")
         end
@@ -168,7 +151,7 @@ function BloxburgAutofarm(type)
 
             wait()
         end
-    elseif(type == 2) then
+    elseif(t == 2) then
         if (stats.Job.Value ~= "BloxyBurgersCashier") then
             jobManager:GoToWork("BloxyBurgersCashier")
         end;
@@ -200,19 +183,20 @@ local S1, S2, S4, S5 = window:Tab("Player"), window:Tab("Server"), window:Tab("E
 --#region Game : Bloxburg
 if game.PlaceId == 185655149 then
     local S3 = window:Tab("Bloxburg")
+	local handler = require(game:GetService("Players").LocalPlayer.PlayerGui.MainGUI.Scripts.GUIHandler);
 
     S3:Label("Autofarm")
 
     S3:Button("Bloxburg Autofarm : Hair Dressing", function()
-        lib:Notification("Autofarm Started", "Hairdressing autofarm has begun.", "Ok")
-
         BloxburgAutofarm(1)
+		handler:AlertBox("Started Hair Dressing Autofarm. To ensure you don't get banned (still could happen), make sure to as many cars as possible and sell them at the end of your shift.", "Autofarm Started", 5);
     end)
 
     S3:Button("Bloxburg Autofarm : Cashier", function()
         lib:Notification("Autofarm Started", "Cashier autofarm has begun.", "Ok")
 
         BloxburgAutofarm(2)
+		handler:AlertBox("Started Cashier Autofarm. To ensure you don't get banned (still could happen), make sure to as many cars as possible and sell them at the end of your shift.", "Autofarm Started", 5);
     end)
 end
 --#endregion
@@ -246,12 +230,12 @@ if game.PlaceId == 6153709 then
                     tool.Configuration.RecoilMin.Value = 0
                     tool.Configuration.RecoilMax.Value = 0
                     tool.Configuration.RecoilDecay.Value = 0
-                    tool.Configuration.HitDamage.Value = 999
+                    tool.Configuration.HitDamage.Value = math.huge
                     tool.Configuration.MuzzleFlashSize1.Value = 0
                     tool.Configuration.MuzzleFlashSize0.Value = 0
                     tool.Configuration.TotalRecoilMax.Value = 0
                     tool.Configuration.MaxSpread.Value = 0
-                    tool.Configuration.MaxDistance.Value = 999999
+                    tool.Configuration.MaxDistance.Value = math.huge
                 end
             end
         end
@@ -286,9 +270,9 @@ if game.PlaceId == 6153709 then
                     for _,tool in pairs(plr.Backpack:GetChildren()) do
                         for _,weaponName in pairs(weaponList) do
                             if string.match(tool.Name, weaponName) then
-                                tool.Configuration.AmmoReserves.Value = 999999
-                                tool.Configuration.AmmoCapacity.Value = 999999
-                                tool.CurrentAmmo.Value = 999999
+                                tool.Configuration.AmmoReserves.Value = math.huge
+                                tool.Configuration.AmmoCapacity.Value = math.huge
+                                tool.CurrentAmmo.Value = math.huge
                             end
                         end
                     end
@@ -296,9 +280,9 @@ if game.PlaceId == 6153709 then
                     for _,tool in pairs(plr.Character:GetChildren()) do
                         for _,weaponName in pairs(weaponList) do
                             if string.match(tool.Name, weaponName) then
-                                tool.Configuration.AmmoReserves.Value = 999999
-                                tool.Configuration.AmmoCapacity.Value = 999999
-                                tool.CurrentAmmo.Value = 999999
+                                tool.Configuration.AmmoReserves.Value = math.huge
+                                tool.Configuration.AmmoCapacity.Value = math.huge
+                                tool.CurrentAmmo.Value = math.huge
                             end
                         end
                     end
@@ -311,37 +295,46 @@ if game.PlaceId == 6153709 then
 end
 --#endregion
 
---#region Game : Jailbreak
--- nothing yet bruh
---#endregion
-
 --#region Player
 S1:Label("General")
 
-S1:Button("Anti-AFK Kick", function()
-    AntiAFK()
+S1:Button("Anti-AFK Kick", function() AntiAFK() end)
+
+S1:Toggle("Toggle Badge Notifications",false,function(v)
+    if v then
+        game:GetService("StarterGui"):SetCore("BadgesNotificationsActive", true)
+    else
+        game:GetService("StarterGui"):SetCore("BadgesNotificationsActive", false)
+    end
+end)
+
+S1:Toggle("Toggle Point Notifications",false,function(v)
+    if v then
+        game:GetService("StarterGui"):SetCore("PointsNotificationsActive", true)
+    else
+        game:GetService("StarterGui"):SetCore("PointsNotificationsActive", false)
+    end
 end)
 
 S1:Label("Movement")
 
 S1:Toggle("Speed",false,function(v) Speed(v) end)
-S1:Slider("Speed Amount",16,150,16,function(v) walkSpeed = v end)
+S1:Slider("Speed Amount",16,150,0,function(v) walkSpeed = v end)
 
 S1:Toggle("Super Jump",false,function(v) SuperJump(v) end)
-S1:Slider("Jump Power",50,1000,50,function(v) jumpPower = v end)
+S1:Toggle("Infinite Jump",false,function(v) InfiniteJump(v) end)
+S1:Slider("Jump Power",50,1000,0,function(v) jumpPower = v end)
 --#endregion
 
 --#region Server
+S2:Button("Lighting Enhancemnets",function(v) Lighting(v) end)
 S2:Button("Rejoin Server", function() game:GetService("TeleportService"):Teleport(game.PlaceId, plr) end)
---#endregion
-
---#region ESP
-S4:Toggle("Tracers",false,function(v) Tracers(v) end)
 --#endregion
 
 --#region Script Hub
 S5:Label("Essential")
 S5:Button("Simple Spy",function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Concepts0/Void/experimental/scripts/simplespy.lua"))() end)
+S5:Button("Dark Dex V3",function() if game:GetService'CoreGui':FindFirstChild'Dex'then game:GetService'CoreGui'.Dex:Destroy()end;math.randomseed(tick())local a={}for b=48,57 do table.insert(a,string.char(b))end;for b=65,90 do table.insert(a,string.char(b))end;for b=97,122 do table.insert(a,string.char(b))end;function RandomCharacters(c)if c>0 then return RandomCharacters(c-1)..a[math.random(1,#a)]else return''end end;local d=game:GetObjects('rbxassetid://3567096419')[1]d.Name=RandomCharacters(math.random(5,20))d.Parent=game:GetService('CoreGui')local function e(f,g)local function h(i,j)local k={}local l={script=j}local m={}m.__index=function(n,o)if l[o]==nil then return getfenv()[o]else return l[o]end end;m.__newindex=function(n,o,p)if l[o]==nil then getfenv()[o]=p else l[o]=p end end;setmetatable(k,m)setfenv(i,k)return i end;local function q(j)if j.ClassName=='Script'or j.ClassName=='LocalScript'then spawn(function()h(loadstring(j.Source,'='..j:GetFullName()),j)()end)end;for b,r in pairs(j:GetChildren())do q(r)end end;q(f)end;e(d) end)
 S5:Button("Dark Dev V4",function() loadstring(game:HttpGetAsync("https://pastebin.com/raw/iuQPQq4M"))() end) 
 S5:Label("Hubs")
 S5:Button("Solaris",function() loadstring(game:HttpGet('https://solarishub.dev/script.lua',true))() end)
