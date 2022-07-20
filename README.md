@@ -1,3 +1,6 @@
+# NOTE: VOID IS NOT CURRENTLY BEING WORKED ON, AND WILL BE REWRITTEN WHENEVER DEVELOPMENT STARTS AGAIN.
+
+
 # Welcome to Void.
 ## Vape UI Library
 I have edited the Vape UI Library created by [dawid](https://v3rmillion.net/member.php?action=profile&uid=1052423)/[post](https://v3rmillion.net/showthread.php?tid=1098651). I have made a few quality of life changes and optimizations to make the UI library work for Void in the best way possible. I will be adding on to it in the future to implement things like remote spies, lua code editors, etc.
